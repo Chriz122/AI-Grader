@@ -113,8 +113,6 @@ cd c:\Users\USER\Desktop\AI-Grader
 - 執行 GUI 應用程式（`gui_app.py`）
 - 若環境未正確設定會顯示錯誤訊息
 
-**注意：** 執行前請確保已完成安裝與 API 金鑰設定。
-
 ## 自訂與調整
 
 - 修改 `knowledge/grading_criteria.md` 可微調評分細節與配分。

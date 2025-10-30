@@ -113,8 +113,6 @@ The script automatically:
 - Launches the GUI application (`gui_app.py`)
 - Displays any errors if the environment is not properly set up
 
-**Note:** Make sure you have completed the installation and API key configuration before running the application.
-
 ## Customization
 
 - Edit `knowledge/grading_criteria.md` to adjust scoring details.
