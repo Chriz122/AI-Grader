@@ -111,7 +111,6 @@ cd c:\Users\USER\Desktop\AI-Grader
 The script automatically:
 - Activates the Python virtual environment
 - Launches the GUI application (`gui_app.py`)
-- Displays any errors if the environment is not properly set up
 
 ## Customization
 

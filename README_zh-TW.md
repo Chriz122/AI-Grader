@@ -111,7 +111,6 @@ cd c:\Users\USER\Desktop\AI-Grader
 此批次檔會自動：
 - 啟用 Python 虛擬環境
 - 執行 GUI 應用程式（`gui_app.py`）
-- 若環境未正確設定會顯示錯誤訊息
 
 ## 自訂與調整
 
