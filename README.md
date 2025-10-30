@@ -1,8 +1,8 @@
-# AI Grader - Automated Homework Grading System
+# AI Grader - Automated Homework Grading Tool
 
 [繁體中文](README_zh-TW.md) | English
 
-This repository contains an automated Python homework grading system that uses a LLM (Large Language Model) to evaluate student Python assignments.
+This repository contains an automated Python homework grading tool that uses a LLM (Large Language Model) to evaluate student Python assignments.
 
 ## Features
 

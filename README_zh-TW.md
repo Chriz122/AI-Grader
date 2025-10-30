@@ -1,8 +1,8 @@
-# AI Grader - 作業批改系統
+# AI Grader - 作業批改工具
 
 繁體中文 | [English](README.md)
 
-這是一個使用 LLM (Large Language Model) 自動批改 Python 程式作業的系統。
+這是一個使用 LLM (Large Language Model) 自動批改 Python 程式作業的工具。
 
 ## 功能特色
 
