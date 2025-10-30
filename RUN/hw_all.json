@@ -1,0 +1,65 @@
+{
+    "1140001 Ethan": {
+        "上課完成": {
+            "D0001PrgHw02_1.py": "#資料輸入\nprint(\"\\t\\t/**這是計算出球的表面積及體積的程式**/\\n\")\nB=float(input(\"\\t\\t請輸入球的半徑(cm):\"))\n\nimport math \n\n#表面積與體積計算公式\nS=(4/3*math.pi*B*B*B)\nM=(4*math.pi*B*B)\n\n#輸出結果\nprint(\"\\n\\t\\t表面積: %.2f (cm²)\" %S)\nprint(\"\\n\\t\\t體積: %.2f (cm³)\" %M)",
+            "D0001PrgHw02_2.py": "#由鍵盤輸入橢圓體的赤道半徑a、b及極半徑c\n# a,b,c=map(int, input(‘請輸入橢圓體的赤道半徑a、b及極半徑c:’).split(‘,’)) #每筆資料以split()指定的符號來間隔\nprint('請輸入橢圓體的赤道半徑a、b及極半徑c(cm)')\na=int(input('a='))\nb=int(input('b='))\nc=int(input('c='))\n\n#設定常數 p\np=1.0675\n\nimport math\n  \n#表面積與體積計算公式\nS=4*math.pi*(((a**p)*(b**p)+(a**p)*(c**p)+(b**p)*(c**p)/3)**(1/p))\nM=(4/3)*math.pi*a*b*c\n\n#輸出結果\nprint(\"\\n\\t\\t表面積: %.2f (cm³)\" %S)\nprint(\"\\n\\t\\t體積: %.2f (cm³)\" %M)",
+            "D0001PrgHw02_3.py": "#由鍵盤輸入一元二次方程式的a, b, c三個係數值\n# a,b,c=map(int, input(‘請輸入一元二次方程式的a, b, c三個係數值:’).split(‘,’)) #每筆資料以split()指定的符號來間隔\nprint('請輸入一元二次方程式(ax2+bx+c=0)的a, b, c三個係數值')\na=int(input('a='))\nb=int(input('b='))\nc=int(input('c='))\n\nimport math\n\n#判別式 b² ≥ 4ac\ndisc = b**2 - 4*a*c\n\n#計算兩個實數解\nx=(-b+math.sqrt(disc))/(2*a)\ny=(-b-math.sqrt(disc))/(2*a)\n\n# 顯示結果\nprint('\\n此方程式的兩個實數解為：')\nprint(\"\\n\\t\\tx₁: %.2f \" %x)\nprint(\"\\n\\t\\tx₂: %.2f \" %y)",
+            "D0001PrgHw02_4.py": "#資料輸入\nprint(\"\\t\\t/**這是可算出身體質量指數BMI與理想體重的程式**/\\n\")\nH=float(input(\"\\t\\t請輸入身高(cm):\"))\nW=float(input(\"\\t\\t請輸入體重(kg):\"))\n\n#身高換算\nM=H/100\n\n#計算BMI\nBMI=W/(M**2)\n\n#計算理想體重\n#男生理想體重(kg)=(身高(cm)-80)*0.7\nidealmale=(H-80)*0.7\n    \n#女生理想體重(kg)=(身高(cm)-70)*0.6\nidealwoman=(H-70)*0.6\n\n#輸出BMI\nprint(f\"您的身體質量指數 (BMI) 為: {BMI:.2f}\")\n    \n#輸出理想體重\nprint(f\"男生理想體重應為: {idealmale:.2f} kg\")\nprint(f\"女生理想體重應為: {idealwoman:.2f} kg\")"
+        },
+        "回家完成": {}
+    },
+    "1140002 Sam": {
+        "上課完成": {
+            "D0002PrgHw02_1.py": "a=input(\"球的半徑(cm):\")\na=int(a)\nb=4*3.14*a*a\nc=4/3*3.14*a*a*a\nprint(\"球的體積=\",c,\"(cm^3)\")\nprint(\"球的表面積=\",b,\"(cm^2)\")\n",
+            "D0002PrgHw02_2.py": "a=input(\"赤道半徑x=\")\nb=input(\"赤道半徑y=\")\nc=input(\"赤道半徑z=\")\na=int(a)\nb=int(b)\nc=int(c)\nd=4/3*3.14*a*b*c\ne=((a**1.0675*b**1.0675+a**1.0675*c**1.0675+b**1.0675*c**1.0675)/3)\nf=e**1/1.0675\ng=4*3.14*f\nprint(\"橢圓的體積=\",d)\nprint(\"橢圓表面積=\",e)",
+            "D0002PrgHw02_3.py": "a = input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 a=\")\nb = input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 b=\")\nc = input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 c=\")\na = int(a)\nb = int(b)\nc = int(c)\nd = b*-1+(b*b-4*a*c)**0.5\ne = d/2*a\nf = b*-1-(b*b-4*a*c)**0.5\ng = f/2*a\nprint(\"解為=\",e,g)",
+            "D0002PrgHw02_4.py": "a = input(\"身高(cm)=\")\nb = input(\"體重(kg)=\")\na = int(a)\nb = int(b)\nf = a/100\nc = b/(f*f)\nd = (a-80)*0.7\ne = (a-70)*0.6\nprint(\"bmi=\",c)\nprint(\"男性理想體重=\",d,\"(kg)\")\nprint(\"女性理想體重=\",e,\"(kg)\")"
+        },
+        "回家完成": {}
+    },
+    "1140003 Sean": {
+        "上課完成": {
+            "D0003PrgHw02_1.py": "a = int(input(\"球體半徑(cm):\"))\nb=4/3*3.14*(a*a*a)\nc=4*3.14*(a*a)\nprint(\"球體表面積\",c,\"(cm^2)\",\"球體積\",c,\"(cm^3)\")\n",
+            "D0003PrgHw02_2.py": "a=int(input(\"赤道半徑(cm沿著 )(x軸):\"))\nb=int(input(\"赤道半徑(cm)(y軸):\"))\nc=int(input(\"極半徑(沿著z軸):\"))\nd=4/3*3.14*a*b*c\ne=(4*3.14)*(((((a**1.0675)*(b**1.0675))+((a**1.0675)*(c**1.0675))+((b**1.0675)*(c**1.0675)))/3)**1.0675)\nprint(\"橢圓表面積\",e,\"(cm^2)\",\"橢圓體積\",d,\"(cm^3)\")",
+            "D0003PrgHw02_3.py": "a=int(input('a='))\nb=int(input('b='))\nc=int(input('c='))\np=(-b+(b*b-(4*a*c)))/(2*a)\nr=(-b-(b*b-(4*a*c)))/(2*a)\nprint(\"實數解=\",p,\"and\",r)\n",
+            "D0003PrgHw02_4.py": "print(\"---請輸入個人身高與體重---\")\na=int(input(\"身高(cm)：\"))\nb=int(input(\"體重(kg):\"))\nc=b/((a/100)*(a/100))\nd=(a-80)*0.7\ne=(a-70)*0.6\nprint(\"BMI=\",c)\nprint(\"男生理想體重為:\",d,\"(kg)\",\"女生理想體重為:\",e,\"(kg)\")\n\n\n"
+        },
+        "回家完成": {}
+    },
+    "1140004 Kai": {
+        "上課完成": {
+            "D0004PrgHw02_1.py": "a = input(\"半徑 (cm):\")\na = int(a)\nb = 4*3.14*a*a \nc = 4/3*3.14*a*a*a\nprint(\"球的表面積=\",b,\"(cm^2)\")\nprint(\"球的體積=\",c,\"(cm^3)\")",
+            "D0004PrgHw02_2.py": "a = input(\"赤道半徑x軸=\")\nb = input(\"赤道半徑y軸=\")\nc = input(\"極半徑=\")\na= int(a)\nb = int(b)\nc = int(c)\nd = ((a**1.0675*b**1.0675+a**1.0675*c**1.0675+b**1.0675*c**1.0675)/3)\nf = d**1.0675\ng = f*4*3.14\ne = 4/3*3.14*a*b*c\nprint(\"橢圓體的表面積=\",g)\nprint(\"橢圓體的體積=\",e)",
+            "D0004PrgHw02_3.py": "a = input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 a=\")\nb = input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 b=\")\nc = input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 c=\")\na = int(a)\nb = int(b)\nc = int(c)\nd = b*-1+(b*b-4*a*c)**0.5\ne = d/2*a\nf = b*-1-(b*b-4*a*c)**0.5\ng = f/2*a\nprint(\"解為=\",e,g)",
+            "D0004PrgHw02_4.py": "a = input(\"身高(cm)=\")\nb = input(\"體重(kg)=\")\na = int(a)\nb = int(b)\nf = a/100\nc = b/(f*f)\nd = (a-80)*0.7\ne = (a-70)*0.6\nprint(\"bmi=\",c)\nprint(\"男性理想體重=\",d,\"(kg)\")\nprint(\"女性理想體重=\",e,\"(kg)\")"
+        },
+        "回家完成": {}
+    },
+    "1140005 Tony": {
+        "上課完成": {
+            "D0005PrgHw02_1.py": "import math\na=float(input(\"球的半徑(cm)\"))\nb=4/3*(a**3)*math.pi\nprint(\"球體積\",b,\"cm³\")\nc=4*math.pi*(a**2)\nprint(\"球表面積\",c,\"cm²\")\n\n",
+            "D0005PrgHw02_2.py": "import math\na=float(input(\"赤道半徑沿x軸\"))\nb=float(input(\"赤道半徑沿y軸\"))\nc=float(input(\"極半徑沿z軸\"))\nd=4/3*math.pi*a*b*c\nprint(\"橢圓體積\",d)\ne=4*math.pi*(((a**1.0675)*(b**1.0675)+(a**1.0675)*(c**1.0675)+(b**1.0675)*(c**1.0675))/3)**(1/1.0675)\nprint(\"表面積\",e)\n\n",
+            "D0005PrgHw02_3.py": "import math\nprint(\"ax²+bx+c=0\")\na=int(input(\"a=\"))\nb=int(input(\"b=\"))\nc=int(input(\"c=\"))\n\nD=b**2-4*a*c\n\nd=float(-b+ math.sqrt(D)/2*a)\ne=float(-b- math.sqrt(D)/2*a)\nprint(\"兩個實數解\",d,e)\n",
+            "D0005PrgHw02_4.py": "a=float(input(\"身高(cm)\"))\nb=float(input(\"體重(kg)\"))\nc=b/((a/100)**2)\nprint(\"bmi\",c)\nd=(a-80)*0.7\ne=(a-70)*0.6\nprint(\"男生理想體重\",d,\"kg\",\"女生理想體重\",e,\"kg\")\n\n\n"
+        },
+        "回家完成": {}
+    },
+    "1140006 Jason": {
+        "上課完成": {
+            "D0006PrgEx02_1.py": "a=int(input(\"請輸入球的半徑(cm):\"))\n#計算球的體積\ns=(4/3)*3.14*(a**3)\n#計算球的表面積\nd=4*3.14*(a**2)\nprint(\"球的表面積:\",round(d),\"(cm²)\")\nprint(\"球的體積:\",round(s),\"(cm^3)\")\n",
+            "D0006PrgEx02_2.py": "a=float(input(\"請輸入赤道半徑x:\"))\nb=float(input(\"請輸入赤道半徑y:\"))\nc=float(input(\"請輸入極半徑z:\"))\np=1.0675\n#計算橢圓的體積\ns=(4/3)*3.14*(a*b*c)\n#計算橢圓的表面積(近似)\nA=4*(3.14)*(((a*b)**p+(a*c)**p+(b*c)**p)/3)**(1/p)\nprint(\"橢圓的體積:\",round(s),\"(cm³)\")\nprint(\"\\n橢圓的表面積=\",round(A),\"(cm²)\")\n",
+            "D0006PrgEx02_3.py": "a,b,c=map(int,input(\"請輸入一元二次方程式ax²+bx+c的 a,b,c三個係數值:\").split( ))\n#(b**2)>=4*a*c\n#計算公式解\ns=(-b+(b**2-4*a*c)**0.5)/2*a\nt=(-b-(b**2-4*a*c)**0.5)/2*a\nprint(\"兩個實數解為:\",round(s),round(t))\n\n   \n\n\n\n",
+            "D0006PrgEx02_4.py": "a=float(input(\"請輸入身高(cm):\"))\nb=float(input(\"請輸入體重(kg):\"))\n#身高公分換公尺\nc=a/100\n#換算bmi\nbmi=b/(c**2)\nprint(\"身體質量指數:\",round(bmi))\n#計算男生理想體重\nboy=(a-80)*0.7\n#計算女生理想體重\ngirl=(a-70)*0.6\nprint(\"男生理想體重(kg):\",round(boy))\nprint(\"女生理想體重(kg):\",round(girl))\n\n"
+        },
+        "回家完成": {}
+    },
+    "1140007 Victor": {
+        "上課完成": {
+            "D0007PrgHw02_1.py": "a=input(\"球的半徑(cm):\")\na=int(a)\nb=4*3.14*a*a\nc=4/3*3.14*a*a*a\nprint(\"球的體積=\",c,\"(cm^3)\")\nprint(\"球的表面積=\",b,\"(cm^2)\")\n",
+            "D0007PrgHw02_2.py": "a=input(\"赤道半徑x=\")\nb=input(\"赤道半徑y=\")\nc=input(\"赤道半徑z=\")\na=int(a)\nb=int(b)\nc=int(c)\nd=4/3*3.14*a*b*c\ne=((a**1.0675*b**1.0675+a**1.0675*c**1.0675+b**1.0675*c**1.0675)/3)\nf=e**1/1.0675\ng=4*3.14*f\nprint(\"橢圓的體積=\",d)\nprint(\"橢圓表面積=\",e)",
+            "D0007PrgHw02_3.py": "a=input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 a=\")\nb=input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 b=\")\nc=input(\"輸入”一元二次方程式(ax^2+bx+c=0)”的 c=\")\na=int(a)\nb=int(b)\nc=int(c)\nd=b*-1+(b*b-4*a*c)**0.5\ne=d/2*a\nf=b*-1-(b*b-4*a*c)**0.5\ng=f/2*a\nprint(\"解為=\",e,g)",
+            "D0007PrgHw02_4.py": "a = input(\"身高(cm)=\")\nb = input(\"體重(kg)=\")\na = int(a)\nb = int(b)\nf = a/100\nc = b/(f*f)\nd = (a-80)*0.7\ne = (a-70)*0.6\nprint(\"bmi=\",c)\nprint(\"男性理想體重=\",d,\"(kg)\")\nprint(\"女性理想體重=\",e,\"(kg)\")"
+        },
+        "回家完成": {}
+    }
+}

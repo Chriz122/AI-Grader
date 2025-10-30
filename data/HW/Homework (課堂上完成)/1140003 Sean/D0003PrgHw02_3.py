@@ -1,0 +1,6 @@
+a=int(input('a='))
+b=int(input('b='))
+c=int(input('c='))
+p=(-b+(b*b-(4*a*c)))/(2*a)
+r=(-b-(b*b-(4*a*c)))/(2*a)
+print("實數解=",p,"and",r)

@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# 虛擬環境
+.venv/
+venv/
+env/
+.env
+
+# VS Code
+.vscode/
+
+# # 專案輸出和本地數據
+# RUN/HW_ALL.json
+# RUN/grading_results.json
+# RUN/homework_scores.txt
+# RUN/*.log
+
+# # 忽略資料夾內容，但保留空資料夾
+# data/**
+# !data/.gitkeep
+
+# RUN/**
+# !RUN/.gitkeep
