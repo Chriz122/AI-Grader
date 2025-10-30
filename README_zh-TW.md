@@ -95,6 +95,26 @@ GEMINI_API_KEY = "your_key_here"
 | gemini-2.5-flash | Text-out models | 0 / 10 | 0 / 250K | 0 / 250 |
 | gemini-2.5-pro | Text-out models | 0 / 2 | 0 / 125K | 0 / 50 |
 
+## 快速啟動
+
+專案根目錄提供了 `run_app.bat` 批次檔案，Windows 使用者可快速啟動 GUI 批改介面：
+
+**方法一：直接執行**
+- 雙擊專案根目錄的 `run_app.bat` 檔案即可啟動 GUI 批改介面。
+
+**方法二：命令列執行**
+```powershell
+cd c:\Users\USER\Desktop\AI-Grader
+.\run_app.bat
+```
+
+此批次檔會自動：
+- 啟用 Python 虛擬環境
+- 執行 GUI 應用程式（`gui_app.py`）
+- 若環境未正確設定會顯示錯誤訊息
+
+**注意：** 執行前請確保已完成安裝與 API 金鑰設定。
+
 ## 自訂與調整
 
 - 修改 `knowledge/grading_criteria.md` 可微調評分細節與配分。

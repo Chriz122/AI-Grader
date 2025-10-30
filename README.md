@@ -95,6 +95,26 @@ Notes:
 | gemini-2.5-flash | Text-out models | 0 / 10 | 0 / 250K | 0 / 250 |
 | gemini-2.5-pro | Text-out models | 0 / 2 | 0 / 125K | 0 / 50 |
 
+## Quick Start
+
+For Windows users, a batch script `run_app.bat` is provided for easy launching of the GUI application:
+
+**Method 1: Double-click to run**
+- Simply double-click `run_app.bat` in the project root directory to launch the GUI grading interface.
+
+**Method 2: Command line**
+```powershell
+cd c:\Users\USER\Desktop\AI-Grader
+.\run_app.bat
+```
+
+The script automatically:
+- Activates the Python virtual environment
+- Launches the GUI application (`gui_app.py`)
+- Displays any errors if the environment is not properly set up
+
+**Note:** Make sure you have completed the installation and API key configuration before running the application.
+
 ## Customization
 
 - Edit `knowledge/grading_criteria.md` to adjust scoring details.
