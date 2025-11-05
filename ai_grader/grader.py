@@ -271,9 +271,6 @@ class HomeworkGrader:
         print(f"已輸出 CSV 至：{self.output_path / 'homework_scores.csv'}")
     
     def run(self):
-        print("=" * 40)
-        print("AI Grader - 作業批改系統")
-        print("=" * 40)
         print(f"\n載入資源完成：")
         print(f"- 題目檔案：{self.questions_path}")
         print(f"- 評分標準：{self.grading_criteria_path}")
@@ -310,6 +307,9 @@ class HomeworkGrader:
         print("=" * 40)
 
 if __name__ == "__main__":
+    print("=" * 40)
+    print("AI Grader - 作業批改系統")
+    print("=" * 40)
     grader = HomeworkGrader(
         grading_criteria_path=r"knowledge/grading_criteria.md",
         output_format_path=r"knowledge/output_format.md",
