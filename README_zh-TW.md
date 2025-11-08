@@ -75,12 +75,11 @@ GEMINI_API_KEY = "your_key_here"
 - 當呼叫 API 時若遇到 429 / RESOURCE_EXHAUSTED（配額耗盡）錯誤，`ai_grader` 會自動切換到下一組已註冊的金鑰並重試。
 - 若所有已註冊金鑰都嘗試過且配額皆用盡，將會回報失敗並停止重試。
 
-注意事項：
-- 金鑰的載入順序依環境變數編號（1,2,3...）決定，請依使用優先順序填寫。
-- 若僅提供 `GEMINI_API_KEY`，系統仍可正常運作，但不具備自動輪替功能（除非手動新增多個 `GEMINI_API_KEY_<n>`）。
-- 金鑰與配額管理請依供應商政策與帳號限制操作。
-
-- 申請金鑰：https://aistudio.google.com/api-keys
+> [!NOTE]
+> - 金鑰的載入順序依環境變數編號（1,2,3...）決定，請依使用優先順序填寫。
+> - 若僅提供 `GEMINI_API_KEY`，系統仍可正常運作，但不具備自動輪替功能（除非手動新增多個 `GEMINI_API_KEY_<n>`）。
+> - 金鑰與配額管理請依供應商政策與帳號限制操作。
+> - 申請金鑰：https://aistudio.google.com/api-keys
 
 3) 選擇 Gemini 模型
 
@@ -114,6 +113,8 @@ cd c:\Users\USER\Desktop\AI-Grader
 
 ## 自訂與調整
 
+> [!TIP]
+> 可使用 [OpenAI 官方 Prompt 修飾器](https://platform.openai.com/chat/edit?models=gpt-5&optimize=true) 快速潤飾 `knowledge/grading_criteria.md` 與 `knowledge/output_format.md`。
 - 修改 `knowledge/grading_criteria.md` 可微調評分細節與配分。
 - 修改 `knowledge/output_format.md` 可定義 LLM 回傳的 JSON 欄位。
 - `ai_grader/grader.py` 、`ai_grader/plagiarism_or_not.py` 的 `MODEL_NAME` 可調整為其他 Gemini 模型（預設 `gemini-2.5-flash`）。

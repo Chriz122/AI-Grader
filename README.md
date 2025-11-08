@@ -75,10 +75,10 @@ Behavior summary:
 - On API errors like 429 / RESOURCE_EXHAUSTED (quota exhausted), the grader will automatically switch to the next registered key and retry.
 - If all registered keys are exhausted, the process will report failure and stop retrying.
 
-Notes:
-- Key rotation order follows the numeric index (1,2,3...). Fill them in according to the priority you want to use.
-- If only `GEMINI_API_KEY` is provided, the system still works but will not auto-rotate keys.
-- Manage API keys and quotas according to your provider’s policies.
+> [!NOTE]
+> - Key rotation order follows the numeric index (1,2,3...). Fill them in according to the priority you want to use.
+> - If only `GEMINI_API_KEY` is provided, the system still works but will not auto-rotate keys.
+> - Manage API keys and quotas according to your provider’s policies.
 
 - Obtain API keys here: https://aistudio.google.com/api-keys
 
@@ -114,6 +114,8 @@ The script automatically:
 
 ## Customization
 
+> [!TIP]
+> Can use the [OpenAI Prompt Editor](https://platform.openai.com/chat/edit?models=gpt-5&optimize=true) to polish `knowledge/grading_criteria.md` and `knowledge/output_format.md`.
 - Edit `knowledge/grading_criteria.md` to adjust scoring details.
 - Edit `knowledge/output_format.md` to define the LLM's JSON response format.
 - Change the `MODEL_NAME` in `ai_grader/grader.py` 、`ai_grader/plagiarism_or_not.py` to use a different Gemini model (default: `gemini-2.5-flash`).
