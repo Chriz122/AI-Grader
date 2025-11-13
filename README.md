@@ -118,7 +118,7 @@ The AI Grader GUI provides a user-friendly interface with multiple tabs for diff
 
 ### 1. Homework to JSON (hw2json)
 
-![HW to JSON Interface](asset/hw2json.png)
+![HW to JSON Interface](assets/hw2json.png)
 
 Convert student homework submissions into JSON format:
 - Configure class paths for different homework types
@@ -127,7 +127,7 @@ Convert student homework submissions into JSON format:
 
 ### 2. PDF to Markdown (pdf2md)
 
-![PDF to MD Interface](asset/pdf2md.png)
+![PDF to MD Interface](assets/pdf2md.png)
 
 Convert PDF problem statements to Markdown format:
 - Select PDF file containing homework questions
@@ -137,7 +137,7 @@ Convert PDF problem statements to Markdown format:
 
 ### 3. Grading
 
-![Grading Interface](asset/grader.png)
+![Grading Interface](assets/grader.png)
 
 Automatic homework grading interface:
 - Configure grading criteria, output format, and questions files
@@ -149,7 +149,7 @@ Automatic homework grading interface:
 
 ### 4. Plagiarism Detection
 
-![Plagiarism Interface](asset/plagiarism.png)
+![Plagiarism Interface](assets/plagiarism.png)
 
 Detect potential plagiarism between student submissions:
 - Configure homework data and student list
@@ -159,7 +159,7 @@ Detect potential plagiarism between student submissions:
 
 ### 5. System Settings
 
-![Settings Interface](asset/settings.png)
+![Settings Interface](assets/settings.png)
 
 Manage system configuration:
 - **Language Settings**: Switch between English and Traditional Chinese

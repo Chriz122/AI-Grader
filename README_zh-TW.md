@@ -117,7 +117,7 @@ AI Grader GUI 提供友善的圖形化介面，包含多個功能分頁：
 
 ### 1. 作業轉 JSON (hw2json)
 
-![HW to JSON 介面](asset/hw2json.png)
+![HW to JSON 介面](assets/hw2json.png)
 
 將學生作業轉換為 JSON 格式：
 - 設定不同類型作業的班級路徑
@@ -126,7 +126,7 @@ AI Grader GUI 提供友善的圖形化介面，包含多個功能分頁：
 
 ### 2. PDF 轉 Markdown (pdf2md)
 
-![PDF to MD 介面](asset/pdf2md.png)
+![PDF to MD 介面](assets/pdf2md.png)
 
 將 PDF 題目檔轉換為 Markdown 格式：
 - 選擇包含作業題目的 PDF 檔案
@@ -136,7 +136,7 @@ AI Grader GUI 提供友善的圖形化介面，包含多個功能分頁：
 
 ### 3. 批改作業 (Grading)
 
-![批改介面](asset/grader.png)
+![批改介面](assets/grader.png)
 
 自動批改作業介面：
 - 設定評分標準、輸出格式與題目檔案
@@ -148,7 +148,7 @@ AI Grader GUI 提供友善的圖形化介面，包含多個功能分頁：
 
 ### 4. 抄襲檢測 (Plagiarism Detection)
 
-![抄襲檢測介面](asset/plagiarism.png)
+![抄襲檢測介面](assets/plagiarism.png)
 
 檢測學生作業之間的潛在抄襲：
 - 設定作業資料與學生名單
@@ -158,7 +158,7 @@ AI Grader GUI 提供友善的圖形化介面，包含多個功能分頁：
 
 ### 5. 系統設定 (Settings)
 
-![設定介面](asset/settings.png)
+![設定介面](assets/settings.png)
 
 管理系統設定：
 - **語言設定**：切換英文與繁體中文介面
