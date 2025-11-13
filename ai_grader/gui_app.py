@@ -4,7 +4,6 @@ from pathlib import Path
 import logging
 import threading
 import os
-import sys
 import json
 import csv
 import re
@@ -20,17 +19,7 @@ except ImportError:
     from .grader import HomeworkGrader
     from .plagiarism_or_not import plagiarism_check
 
-# 獲取基礎路徑的函式
-def get_base_path():
-    if getattr(sys, "frozen", False):
-        # 如果是打包後的執行檔
-        return Path(sys.executable).parent
-    else:
-        # 如果是開發環境
-        return Path.cwd()
 
-
-# 語法高亮類
 class SyntaxHighlighter:  
     def __init__(self, text_widget):
         self.text_widget = text_widget
@@ -196,7 +185,7 @@ class AIGraderGUI:
         self._initial_width = 1000
         self._initial_height = 720
         self.center_window(self._initial_width, self._initial_height)   # 將視窗置中（會設定 geometry）
-        self.base_path = get_base_path()
+        self.base_path = Path.cwd()
         self.root.iconbitmap(str(self.base_path / "ai_grader" / "resources" / "images" / "icon.ico"))
         
         # 設定主題顏色
