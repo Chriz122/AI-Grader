@@ -111,6 +111,61 @@ cd c:\Users\USER\Desktop\AI-Grader
 - 啟用 Python 虛擬環境
 - 執行 GUI 應用程式（`gui_app.py`）
 
+## GUI 介面總覽
+
+AI Grader GUI 提供友善的圖形化介面，包含多個功能分頁：
+
+### 1. 作業轉 JSON (hw2json)
+
+![HW to JSON 介面](asset/hw2json.png)
+
+將學生作業轉換為 JSON 格式：
+- 設定不同類型作業的班級路徑
+- 指定學生名單與輸出路徑
+- 一鍵轉換所有作業
+
+### 2. PDF 轉 Markdown (pdf2md)
+
+![PDF to MD 介面](asset/pdf2md.png)
+
+將 PDF 題目檔轉換為 Markdown 格式：
+- 選擇包含作業題目的 PDF 檔案
+- 選擇生成的 Markdown 輸出目錄
+- 支援 LaTeX 數學公式轉換
+- 選擇用於轉換的 Gemini 模型
+
+### 3. 批改作業 (Grading)
+
+![批改介面](asset/grader.png)
+
+自動批改作業介面：
+- 設定評分標準、輸出格式與題目檔案
+- 載入作業資料（JSON）與學生名單
+- 設定批改結果輸出目錄
+- 選擇用於批改的 Gemini 模型
+- 即時查看執行訊息
+- 產生完整批改報告
+
+### 4. 抄襲檢測 (Plagiarism Detection)
+
+![抄襲檢測介面](asset/plagiarism.png)
+
+檢測學生作業之間的潛在抄襲：
+- 設定作業資料與學生名單
+- 指定要比對的班級（逗號分隔）
+- 調整相似度閾值（0~1）
+- 產生詳細的抄襲檢測報告
+
+### 5. 系統設定 (Settings)
+
+![設定介面](asset/settings.png)
+
+管理系統設定：
+- **語言設定**：切換英文與繁體中文介面
+- **Gemini API 金鑰**：新增、管理與儲存多組 API 金鑰，支援自動輪替
+- **預設模型**：選擇所有操作的預設 Gemini 模型
+- **預設路徑**：設定輸出目錄、評分標準、輸出格式、題目與學生名單的預設路徑
+
 ## 自訂與調整
 
 > [!TIP]

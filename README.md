@@ -112,6 +112,61 @@ The script automatically:
 - Activates the Python virtual environment
 - Launches the GUI application (`gui_app.py`)
 
+## GUI Interface Overview
+
+The AI Grader GUI provides a user-friendly interface with multiple tabs for different functions:
+
+### 1. Homework to JSON (hw2json)
+
+![HW to JSON Interface](asset/hw2json.png)
+
+Convert student homework submissions into JSON format:
+- Configure class paths for different homework types
+- Set student list and output paths
+- One-click conversion of all submissions
+
+### 2. PDF to Markdown (pdf2md)
+
+![PDF to MD Interface](asset/pdf2md.png)
+
+Convert PDF problem statements to Markdown format:
+- Select PDF file containing homework questions
+- Choose output directory for generated Markdown
+- Supports LaTeX math notation conversion
+- Select Gemini model for conversion
+
+### 3. Grading
+
+![Grading Interface](asset/grader.png)
+
+Automatic homework grading interface:
+- Configure grading criteria, output format, and questions files
+- Load homework data (JSON) and student list
+- Set output directory for grading results
+- Select Gemini model for grading
+- View execution messages in real-time
+- Generate comprehensive grading reports
+
+### 4. Plagiarism Detection
+
+![Plagiarism Interface](asset/plagiarism.png)
+
+Detect potential plagiarism between student submissions:
+- Configure homework data and student list
+- Specify classes to compare (comma-separated)
+- Adjust similarity threshold (0~1)
+- Generate detailed plagiarism report
+
+### 5. System Settings
+
+![Settings Interface](asset/settings.png)
+
+Manage system configuration:
+- **Language Settings**: Switch between English and Traditional Chinese
+- **Gemini API Keys**: Add, manage, and save multiple API keys with automatic rotation
+- **Default Model**: Select default Gemini model for all operations
+- **Default Paths**: Configure default directories for output, grading criteria, output format, questions, and student list
+
 ## Customization
 
 > [!TIP]
