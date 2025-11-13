@@ -14,3 +14,6 @@ env/
 
 # VS Code
 .vscode/
+
+# 設定檔
+config.json
