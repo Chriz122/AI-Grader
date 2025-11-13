@@ -2,6 +2,7 @@ import json
 import csv
 import re
 from pathlib import Path
+import logging
 try:
     from api_key_manager import GeminiAPIKeyManager
 except ImportError:
@@ -118,7 +119,7 @@ class HomeworkGrader:
                     self.old_full_prompt = full_prompt
                     self.try_times = 0
 
-                print(f"正在批改: {student_id} {student_name} (使用 API KEY #{self.key_manager.current_index + 1})")
+                logging.info(f"正在批改: {student_id} {student_name} (使用 API KEY #{self.key_manager.current_index + 1})")
                 
                 # 使用 client.models.generate_content 進行生成
                 response = client.models.generate_content(
@@ -137,11 +138,11 @@ class HomeworkGrader:
             except Exception as e:
                 # 檢查是否為 429 配額錯誤
                 if "429" in str(e) and "RESOURCE_EXHAUSTED" in str(e):
-                    print(f"API KEY #{self.key_manager.current_index + 1} 配額已用盡")
+                    logging.warning(f"API KEY #{self.key_manager.current_index + 1} 配額已用盡")
                     
                     # 嘗試切換到下一個 KEY
                     if not self.key_manager.switch_to_next_key():
-                        print("所有 API KEY 的配額都已用盡")
+                        logging.warning("所有 API KEY 的配額都已用盡")
                         return None
                     
                     continue  # 切換 KEY 後重試生成
@@ -150,7 +151,7 @@ class HomeworkGrader:
                 elif "503 UNAVAILABLE" in str(e):
                     # 先輪替 KEY；若同一組 prompt 已嘗試到目前 KEY 的序號（表示轉滿一輪），才 sleep
                     if (full_prompt == self.old_full_prompt) and (self.try_times == self.key_manager.current_index + 1):
-                        print(f"模型過載，正在重試...({str(e)})")
+                        logging.warning(f"模型過載，正在重試...({str(e)})")
                         from time import sleep
                         sleep(30)
                         # 新一輪開始
@@ -162,7 +163,7 @@ class HomeworkGrader:
 
                 elif "getaddrinfo failed" in str(e):
                     if (full_prompt == self.old_full_prompt) and (self.try_times == self.key_manager.current_index + 1):
-                        print(f"網路錯誤，正在重試...({str(e)})")
+                        logging.warning(f"網路錯誤，正在重試...({str(e)})")
                         from time import sleep
                         sleep(30)
                         self.try_times = 0
@@ -173,7 +174,7 @@ class HomeworkGrader:
 
                 elif "Invalid \\escape" in str(e) or "Expecting" in str(e):
                     if (full_prompt == self.old_full_prompt) and (self.try_times == self.key_manager.current_index + 1):
-                        print(f"回應格式錯誤，正在重試...({str(e)})")
+                        logging.warning(f"回應格式錯誤，正在重試...({str(e)})")
                         from time import sleep
                         sleep(30)
                         self.try_times = 0
@@ -184,7 +185,7 @@ class HomeworkGrader:
                     
                 else:
                     # 其他錯誤
-                    print(f"錯誤: {str(e)}")
+                    logging.error(f"錯誤: {str(e)}")
                     return None
 
     # 批改所有學生作業
@@ -214,7 +215,7 @@ class HomeworkGrader:
         with open(report_file, "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
 
-        print(f"\n已輸出完整批改結果至：{report_file}")
+        logging.info(f"\n已輸出完整批改結果至：{report_file}")
 
         self.generate_excel_format(results)
 
@@ -229,7 +230,7 @@ class HomeworkGrader:
         matches = re.findall(pattern, content, re.MULTILINE)
         count = len(matches)
 
-        print(f"從 {self.questions_path} 讀取到 {count} 題")
+        logging.info(f"從 {self.questions_path} 讀取到 {count} 題")
         return count
 
     # 產生 Excel 格式的文字檔
@@ -268,21 +269,21 @@ class HomeworkGrader:
 
                 writer.writerow([idx, student_id, name, total] + q_scores + [remarks])
 
-        print(f"已輸出 CSV 至：{self.output_path / 'homework_scores.csv'}")
+        logging.info(f"已輸出 CSV 至：{self.output_path / 'homework_scores.csv'}")
     
     def run(self):
-        print(f"\n載入資源完成：")
-        print(f"- 題目檔案：{self.questions_path}")
-        print(f"- 評分標準：{self.grading_criteria_path}")
-        print(f"- 學生作業：{self.homework_data_path}")
-        print(f"- 學生人數：{len(self.homework_data)} 人\n")
-        
+        logging.info(f"\n載入資源完成：")
+        logging.info(f"- 題目檔案：{self.questions_path}")
+        logging.info(f"- 評分標準：{self.grading_criteria_path}")
+        logging.info(f"- 學生作業：{self.homework_data_path}")
+        logging.info(f"- 學生人數：{len(self.homework_data)} 人\n")
+
         # 開始批改
-        print("開始批改作業...\n")
+        logging.info("開始批改作業...\n")
         results = self.grade_all_homework()
         
         # 儲存結果
-        print(f"\n批改完成！共批改 {len(results)} 位學生作業")
+        logging.info(f"\n批改完成！共批改 {len(results)} 位學生作業")
         self.save_results(results)
         
         # 顯示統計
@@ -298,18 +299,18 @@ class HomeworkGrader:
         max_score = max(scores)
         min_score = min(scores)
         
-        print("\n" + "=" * 40)
-        print("批改統計")
-        print("=" * 40)
-        print(f"平均分數：{avg_score:.2f}")
-        print(f"最高分數：{max_score}")
-        print(f"最低分數：{min_score}")
-        print("=" * 40)
+        logging.info("\n" + "=" * 40)
+        logging.info("批改統計")
+        logging.info("=" * 40)
+        logging.info(f"平均分數：{avg_score:.2f}")
+        logging.info(f"最高分數：{max_score}")
+        logging.info(f"最低分數：{min_score}")
+        logging.info("=" * 40)
 
 if __name__ == "__main__":
-    print("=" * 40)
-    print("AI Grader - 作業批改系統")
-    print("=" * 40)
+    logging.info("=" * 40)
+    logging.info("AI Grader - 作業批改系統")
+    logging.info("=" * 40)
     grader = HomeworkGrader(
         grading_criteria_path=r"knowledge/grading_criteria.md",
         output_format_path=r"knowledge/output_format.md",

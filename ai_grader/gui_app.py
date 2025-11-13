@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, scrolledtext
 from pathlib import Path
+import logging
 import threading
 import os
 import sys
@@ -65,16 +66,14 @@ class SyntaxHighlighter:
         
         lines = content.split('\n')
         in_code_block = False
-        code_block_start = None
         
         for i, line in enumerate(lines):
-            line_start = f"{i+1}.0"
             
             # 檢查程式碼區塊
             if line.strip().startswith('```'):
                 in_code_block = not in_code_block
                 if in_code_block:
-                    code_block_start = i
+                    pass
                 else:
                     # 高亮整個程式碼區塊
                     self.text_widget.insert(tk.END, line + '\n', "code_block")
@@ -152,11 +151,11 @@ class SyntaxHighlighter:
         pos = 0
         for match in re.finditer(
             r'"([^"\\]|\\.)*"(?=\s*:)|'  # JSON key
-            r'"([^"\\]|\\.)*"(?!\s*:)|'  # JSON string value
-            r'\b\d+\.?\d*\b|'  # Number
-            r'\btrue\b|\bfalse\b|'  # Boolean
-            r'\bnull\b|'  # Null
-            r'[\{\}\[\]]',  # Brackets
+            r'"([^"\\]|\\.)*"(?!\s*:)|'  # JSON 字串
+            r'\b\d+\.?\d*\b|'  # 數字
+            r'\btrue\b|\bfalse\b|'  # 布林值
+            r'\bnull\b|'  # 空值
+            r'[\{\}\[\]]',  # 括號
             content
         ):
             # 插入匹配前的文字
@@ -247,7 +246,7 @@ class AIGraderGUI:
                 # 第一次使用,儲存預設配置
                 self.save_config(config)
         except Exception as e:
-            print(f"載入配置失敗,使用預設值: {e}")
+            logging.error(f"載入配置失敗,使用預設值: {e}")
             config = default_config
         
         # 設定為實例變數
@@ -283,7 +282,7 @@ class AIGraderGUI:
                 json.dump(config, f, ensure_ascii=False, indent=2)
             return True
         except Exception as e:
-            print(f"儲存配置失敗: {e}")
+            logging.error(f"儲存配置失敗: {e}")
             return False
     
     # 設定主題顏色
@@ -295,15 +294,27 @@ class AIGraderGUI:
         style.map("TNotebook.Tab",
                  foreground=[("selected", "#2B2BB0")])
 
-        # 設定執行按鈕樣式 - 綠色
+        # 設定執行按鈕樣式
         style.configure("Accent.TButton",
                        foreground="#228B22",
                        font=("Microsoft JhengHei", 10, "bold"),
                        padding=[15, 8])
         style.map("Accent.TButton",
                  foreground=[("active", "#206C21")])  # hover 時的顏色
-
-        # 設定查看按鈕樣式 - 黑色
+        # 設定拖動手柄樣式
+        style.configure("DragHandle.TLabel",
+                       foreground="#222222",
+                       padding=(6, 2),
+                       font=("Microsoft JhengHei", 10))
+        style.configure("DragHandleHover.TLabel",
+                       foreground="#222222",
+                       padding=(6, 2),
+                       font=("Microsoft JhengHei", 10))  # hover 時的顏色
+        style.configure("DragHandleActive.TLabel",
+                       foreground="#222222",
+                       padding=(6, 2),
+                       font=("Microsoft JhengHei", 10))
+        # 設定查看按鈕樣式
         style.configure("View.TButton",
                        foreground="#222222",
                        font=("Microsoft JhengHei", 10,),
@@ -347,9 +358,9 @@ class AIGraderGUI:
                         if isinstance(data, dict):
                             self.translations[lang] = data
                 except Exception as e:
-                    print(f"載入翻譯檔 {p} 失敗: {e}")
+                    logging.error(f"載入翻譯檔 {p} 失敗: {e}")
         except Exception as e:
-            print(f"搜尋翻譯資料夾失敗: {e}")
+            logging.error(f"搜尋翻譯資料夾失敗: {e}")
     
     # 取得當前語言的翻譯文字
     def t(self, key):
@@ -712,7 +723,7 @@ class AIGraderGUI:
         # 相似度閾值
         self.plag_threshold_label = ttk.Label(self.plag_settings_frame, text=self.t("plag_threshold"))
         self.plag_threshold_label.grid(row=3, column=0, sticky=tk.W, pady=5)
-        self.plag_threshold_var = tk.DoubleVar(value=0.70)
+        self.plag_threshold_var = tk.DoubleVar(value=0.80)
         threshold_frame = ttk.Frame(self.plag_settings_frame)
         threshold_frame.grid(row=3, column=1, sticky=tk.W, padx=5, pady=5)
         
@@ -724,7 +735,7 @@ class AIGraderGUI:
         
         # 直接輸入框
         self.plag_threshold_entry = ttk.Entry(threshold_frame, width=10)
-        self.plag_threshold_entry.insert(0, "0.70")
+        self.plag_threshold_entry.insert(0, "0.80")
         self.plag_threshold_entry.pack(side=tk.LEFT, padx=5)
         
         # 當開始輸入時標記為手動輸入模式
@@ -960,6 +971,11 @@ class AIGraderGUI:
             if found_keys:
                 for key in found_keys:
                     self.add_api_key_entry(key)
+                # 儲存到 os.environ 為 GEMINI_API_KEY_1... 或 GEMINI_API_KEY
+                for i, key in enumerate(found_keys, 1):
+                    os.environ[f"GEMINI_API_KEY_{i}"] = key
+                if len(found_keys) == 1:
+                    os.environ["GEMINI_API_KEY"] = found_keys[0]
             else:
                 # 如果沒有找到，至少顯示一個空的輸入框
                 self.add_api_key_entry()
@@ -969,17 +985,43 @@ class AIGraderGUI:
 
     # 新增 API Key 輸入框
     def add_api_key_entry(self, key_value=""):
-        frame = ttk.Frame(self.api_keys_frame)
-        frame.pack(fill=tk.X, pady=2)
+        frame = ttk.Frame(self.api_keys_frame, relief=tk.FLAT, borderwidth=1)
+        frame.pack(fill=tk.X, pady=2, padx=2)
+        
+        # 拖動手柄
+        drag_label = ttk.Label(
+            frame,
+            text="⠿",
+            cursor="fleur",
+            style="DragHandle.TLabel"
+        )
+        drag_label.pack(side=tk.LEFT)
+        
+        # 懸停效果
+        def on_enter(e):
+            drag_label.config(style="DragHandleHover.TLabel")
+        def on_leave(e):
+            drag_label.config(style="DragHandle.TLabel")
+        drag_label.bind("<Enter>", on_enter)
+        drag_label.bind("<Leave>", on_leave)
         
         index = len(self.api_keys) + 1
         label = ttk.Label(frame, text=f"{self.t('settings_api_key')} {index}:")
-        label.pack(side=tk.LEFT, padx=5)
-        
-        entry = ttk.Entry(frame, width=70, show="*")
+        label.pack(side=tk.LEFT)
+
+        entry = ttk.Entry(frame, width=55, show="*")
         if key_value:
             entry.insert(0, key_value)
         entry.pack(side=tk.LEFT, padx=5)
+
+        # 失焦時自動儲存 API Keys
+        def on_entry_focus_out(event=None):
+            try:
+                self.save_api_keys()
+            except Exception:
+                pass
+
+        entry.bind("<FocusOut>", on_entry_focus_out)
         
         # 顯示/隱藏按鈕
         show_var = tk.BooleanVar(value=False)
@@ -992,6 +1034,74 @@ class AIGraderGUI:
         show_btn = ttk.Checkbutton(frame, text=self.t("plag_show"), variable=show_var, command=toggle_show)
         show_btn.pack(side=tk.LEFT, padx=5)
         
+        # 實作拖動功能
+        def on_drag_start(event):
+            # 記錄拖動開始的位置和當前項目
+            widget = event.widget
+            # 找到對應的 frame
+            current_frame = widget.master
+            self._drag_data = {
+                "frame": current_frame,
+                "y": event.y_root
+            }
+            # 改變外觀表示正在拖動
+            current_frame.configure(relief=tk.RIDGE, borderwidth=2)
+            widget.config(style="DragHandleActive.TLabel")
+        
+        def on_drag_motion(event):
+            if not hasattr(self, '_drag_data'):
+                return
+            
+            # 計算移動距離
+            delta_y = event.y_root - self._drag_data["y"]
+            drag_frame = self._drag_data["frame"]
+            
+            # 找到當前項目的索引
+            drag_idx = None
+            for i, (e, f, lbl, sbtn, delb) in enumerate(self.api_keys):
+                if f == drag_frame:
+                    drag_idx = i
+                    break
+            
+            if drag_idx is None:
+                return
+            
+            # 根據移動方向決定是否交換位置（降低閾值使拖動更靈敏）
+            if delta_y < -15 and drag_idx > 0:  # 向上拖動
+                # 與上一個交換
+                self.api_keys[drag_idx - 1], self.api_keys[drag_idx] = \
+                    self.api_keys[drag_idx], self.api_keys[drag_idx - 1]
+                self._drag_data["y"] = event.y_root
+                self._repack_api_keys()
+            elif delta_y > 15 and drag_idx < len(self.api_keys) - 1:  # 向下拖動
+                # 與下一個交換
+                self.api_keys[drag_idx + 1], self.api_keys[drag_idx] = \
+                    self.api_keys[drag_idx], self.api_keys[drag_idx + 1]
+                self._drag_data["y"] = event.y_root
+                self._repack_api_keys()
+        
+        def on_drag_end(event):
+            if not hasattr(self, '_drag_data'):
+                return
+            
+            drag_frame = self._drag_data["frame"]
+            drag_frame.configure(relief=tk.FLAT, borderwidth=1)
+            # 恢復拖動手柄的外觀
+            event.widget.config(style="DragHandle.TLabel")
+            del self._drag_data
+            
+            # 更新標籤並自動儲存
+            self.update_api_key_labels()
+            try:
+                self.save_api_keys()
+            except Exception:
+                pass
+        
+        # 綁定拖動事件到拖動手柄
+        drag_label.bind("<Button-1>", on_drag_start)
+        drag_label.bind("<B1-Motion>", on_drag_motion)
+        drag_label.bind("<ButtonRelease-1>", on_drag_end)
+        
         # 刪除按鈕
         def remove_this_key():
             if len(self.api_keys) > 1:
@@ -1002,11 +1112,16 @@ class AIGraderGUI:
                         frame.destroy()
                         # 更新剩餘的 API Key 標籤編號
                         self.update_api_key_labels()
+                        try:
+                            self.save_api_keys()
+                        except Exception:
+                            pass
                         break
-        
+
         delete_btn = ttk.Button(frame, text=self.t("btn_delete"), width=3, command=remove_this_key)
         delete_btn.pack(side=tk.LEFT, padx=5)
-        
+
+        # 儲存所有元素的參考 (entry, frame, label, show_btn, delete_btn)
         self.api_keys.append((entry, frame, label, show_btn, delete_btn))
     
     # 更新 API Key 標籤編號
@@ -1019,10 +1134,17 @@ class AIGraderGUI:
             # 更新刪除按鈕文字
             delete_btn.config(text=self.t("btn_delete"))
     
+    # 重新排列 API Keys UI
+    def _repack_api_keys(self):
+        for _, frame, *_ in self.api_keys:
+            frame.pack_forget()
+            frame.pack(fill=tk.X, pady=3, padx=2)
+        self.update_api_key_labels()
+    
     # 移除最後一個 API Key 輸入框（保留此方法以支援舊的移除按鈕）
     def remove_api_key_entry(self):
         if len(self.api_keys) > 1:
-            entry, frame = self.api_keys.pop()
+            entry, frame, *_ = self.api_keys.pop()
             frame.destroy()
             self.update_api_key_labels()
     
@@ -1037,15 +1159,14 @@ class AIGraderGUI:
                 with open(env_path, "r", encoding="utf-8") as f:
                     existing_lines = f.readlines()
             
-            # 移除舊的 GEMINI_API_KEY 相關行
-            new_lines = []
-            for line in existing_lines:
-                if not line.strip().startswith("GEMINI_API_KEY"):
-                    new_lines.append(line)
+            # 移除舊的 GEMINI_API_KEY 相關行（更嚴格，包含 GEMINI_API_KEY, GEMINI_API_KEY_1 等）
+            import re
+            pattern = re.compile(r"^\s*GEMINI_API_KEY(?:_\d+)?\s*=", re.IGNORECASE)
+            new_lines = [line for line in existing_lines if not pattern.match(line)]
             
             # 新增新的 API Keys
             keys_to_save = []
-            for entry, _ in self.api_keys:
+            for entry, frame, label, show_btn, delete_btn in self.api_keys:
                 key = entry.get().strip()
                 if key:
                     keys_to_save.append(key)
@@ -1060,12 +1181,22 @@ class AIGraderGUI:
                 f.writelines(new_lines)
                 # 寫入 API Keys
                 if len(keys_to_save) == 1:
-                    f.write(f"\nGEMINI_API_KEY={keys_to_save[0]}\n")
+                    f.write(f"GEMINI_API_KEY = \"{keys_to_save[0]}\"\n")
                 else:
                     for i, key in enumerate(keys_to_save, 1):
-                        f.write(f"\nGEMINI_API_KEY_{i}={key}\n")
-            
-            messagebox.showinfo("成功", f"已儲存 {len(keys_to_save)} 個 API Key 到 .env 檔案")
+                        f.write(f"GEMINI_API_KEY_{i} = \"{key}\"\n")
+            # 更新當前執行程序的環境變數, 讓程式可以立即使用新的 keys
+            for k in list(os.environ.keys()):
+                if k.startswith("GEMINI_API_KEY"):
+                    os.environ.pop(k, None)
+
+            if len(keys_to_save) == 1:
+                os.environ["GEMINI_API_KEY"] = keys_to_save[0]
+            else:
+                for i, key in enumerate(keys_to_save, 1):
+                    os.environ[f"GEMINI_API_KEY_{i}"] = key
+
+            # messagebox.showinfo("成功", f"已儲存 {len(keys_to_save)} 個 API Key 到 .env 檔案")
         except Exception as e:
             messagebox.showerror("錯誤", f"儲存 API Keys 失敗: {str(e)}")
     
@@ -1158,6 +1289,7 @@ class AIGraderGUI:
                 )
                 
                 self.log_message(self.hw2json_output, self.t("log_hw2json_complete"))
+                self.view_hw2json_output()
                 messagebox.showinfo(self.t("msg_complete"), self.t("log_hw2json_complete"))
             except Exception as e:
                 error_msg = f"{self.t('log_error')} {str(e)}"
@@ -1196,6 +1328,7 @@ class AIGraderGUI:
                 )
                 
                 self.log_message(self.pdf2md_output, self.t("log_pdf2md_complete"))
+                self.view_pdf2md_output()
                 messagebox.showinfo(self.t("msg_complete"), self.t("log_pdf2md_complete"))
             except Exception as e:
                 error_msg = f"{self.t('log_error')} {str(e)}"
@@ -1229,7 +1362,7 @@ class AIGraderGUI:
                 self.log_message(self.grader_output, f"{self.t('log_grader_model')} {model_name}")
                 
                 # 執行評分
-                grader = HomeworkGrader(
+                HomeworkGrader(
                     grading_criteria_path=grading_criteria_path,
                     output_format_path=output_format_path,
                     questions_path=questions_path,
@@ -1240,6 +1373,7 @@ class AIGraderGUI:
                 )
                 
                 self.log_message(self.grader_output, self.t("log_grader_complete"))
+                self.view_grader_output()
                 messagebox.showinfo(self.t("msg_complete"), self.t("log_grader_complete"))
             except Exception as e:
                 error_msg = f"{self.t('log_error')} {str(e)}"
@@ -1287,6 +1421,7 @@ class AIGraderGUI:
                 )
                 
                 self.log_message(self.plag_output, self.t("log_plag_complete"))
+                self.view_plagiarism_output()
                 messagebox.showinfo(self.t("msg_complete"), self.t("log_plag_complete"))
             except Exception as e:
                 error_msg = f"{self.t('log_error')} {str(e)}"
@@ -1769,7 +1904,7 @@ class AIGraderGUI:
 
 def app():
     root = tk.Tk()
-    app = AIGraderGUI(root)
+    AIGraderGUI(root)
     root.mainloop()
 
 if __name__ == "__main__":

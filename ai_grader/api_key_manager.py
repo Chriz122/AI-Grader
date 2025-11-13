@@ -1,4 +1,5 @@
 import os
+import logging
 from google import genai
 from dotenv import load_dotenv
 
@@ -34,8 +35,10 @@ class GeminiAPIKeyManager:
         
         if not self.api_keys:
             raise ValueError("未找到任何 Gemini API KEY。請在 .env 檔案中設定 GEMINI_API_KEY 或 GEMINI_API_KEY_1, GEMINI_API_KEY_2...")
-        
-        print(f"已載入 {len(self.api_keys)} 個 API KEY")
+
+        # 使用 logger
+        logger = logging.getLogger(__name__)
+        logger.info("已載入 %d 個 API KEY", len(self.api_keys))
     
     # 取得當前的 API KEY
     def get_current_key(self):
@@ -44,7 +47,8 @@ class GeminiAPIKeyManager:
     # 切換到下一個 API KEY
     def rotate_to_next_key(self):
         self.current_index = (self.current_index + 1) % len(self.api_keys)
-        print(f"切換到 API_KEY #{self.current_index + 1}")
+        logger = logging.getLogger(__name__)
+        logger.info("切換到 API_KEY #%d", self.current_index + 1)
         return
     
     # 切換到下一個 API KEY，如果沒有可用的 KEY 則返回 False
@@ -69,6 +73,7 @@ def generate(prompt, model_name=MODEL_NAME):
     old_prompt = None  # 追蹤相同 prompt 的重試輪次（先輪替 KEY，一輪全試過才 sleep）
     try_times = 0  # 計數：在同一份 prompt 下，已輪替過幾次 KEY
 
+    logger = logging.getLogger(__name__)
     while True:
         try:
             # 配置當前的 API KEY 並取得 client
@@ -93,11 +98,11 @@ def generate(prompt, model_name=MODEL_NAME):
         except Exception as e:
             # 檢查是否為 429 配額錯誤
             if "429" in str(e) and "RESOURCE_EXHAUSTED" in str(e):
-                print(f"API KEY #{key_manager.current_index + 1} 配額已用盡")
+                logger.warning("API KEY #%d 配額已用盡", key_manager.current_index + 1)
                 
                 # 嘗試切換到下一個 KEY
                 if not key_manager.switch_to_next_key():
-                    print("所有 API KEY 的配額都已用盡")
+                    logger.error("所有 API KEY 的配額都已用盡")
                     return None
                 
                 continue  # 切換 KEY 後重試生成
@@ -106,7 +111,7 @@ def generate(prompt, model_name=MODEL_NAME):
             elif "503 UNAVAILABLE" in str(e):
                 # 先輪替 KEY；若同一組 prompt 已嘗試到目前 KEY 的序號（表示轉滿一輪），才 sleep
                 if (prompt == old_prompt) and (try_times == key_manager.current_index + 1):
-                    print(f"模型過載，正在重試...({str(e)})")
+                    logger.warning("模型過載，正在重試...(%s)", str(e))
                     from time import sleep
                     sleep(30)
                     # 新一輪開始
@@ -118,7 +123,7 @@ def generate(prompt, model_name=MODEL_NAME):
 
             elif "getaddrinfo failed" in str(e):
                 if (prompt == old_prompt) and (try_times == key_manager.current_index + 1):
-                    print(f"網路錯誤，正在重試...({str(e)})")
+                    logger.warning("網路錯誤，正在重試...(%s)", str(e))
                     from time import sleep
                     sleep(30)
                     try_times = 0
@@ -129,7 +134,7 @@ def generate(prompt, model_name=MODEL_NAME):
 
             elif "Invalid \\escape" in str(e) or "Expecting" in str(e):
                 if (prompt == old_prompt) and (try_times == key_manager.current_index + 1):
-                    print(f"回應格式錯誤，正在重試...({str(e)})")
+                    logger.warning("回應格式錯誤，正在重試...(%s)", str(e))
                     from time import sleep
                     sleep(30)
                     try_times = 0
@@ -140,7 +145,7 @@ def generate(prompt, model_name=MODEL_NAME):
                 
             else:
                 # 其他錯誤
-                print(f"錯誤: {str(e)}")
+                logger.exception("錯誤: %s", str(e))
                 return None
 
 if __name__ == "__main__":

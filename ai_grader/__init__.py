@@ -1,3 +1,11 @@
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s",
+)
+
+__all__ = []
 from .api_key_manager import GeminiAPIKeyManager
 from .grader import HomeworkGrader
 from .pdf2md import pdf_to_markdown

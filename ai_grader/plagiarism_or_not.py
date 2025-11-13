@@ -1,5 +1,6 @@
 import json
 import re
+import logging
 from pathlib import Path
 from difflib import SequenceMatcher
 from itertools import combinations
@@ -19,7 +20,7 @@ def get_question_count(questions_path):
     matches = re.findall(pattern, content, re.MULTILINE)
     count = len(matches)
     
-    print(f"從 {questions_path} 讀取到 {count} 題")
+    logging.getLogger(__name__).info("從 %s 讀取到 %d 題", questions_path, count)
     return count
 
 # 載入學生名單
@@ -45,7 +46,7 @@ def infer_question(file_name, max_questions=4):
     if m:
         return int(m.group(1))
     else:
-        print(f"無法推斷題號: {file_name}")
+        logging.getLogger(__name__).warning("無法推斷題號: %s", file_name)
         return None
 
 # 執行抄襲檢查
@@ -59,7 +60,7 @@ def check_plagiarism(homework_data, student_list, threshold, questions, cls=None
                 student_keys.append(key)
                 break
 
-    print(f"找到 {len(student_keys)} 位學生的作業資料")
+    logging.getLogger(__name__).info("找到 %d 位學生的作業資料", len(student_keys))
 
     if cls is None:
         raise SystemExit("未指定類別，停止執行")
@@ -82,7 +83,7 @@ def check_plagiarism(homework_data, student_list, threshold, questions, cls=None
             per_student.setdefault(student_key, (fname, content))
         entries = [(sk, fn, ct) for sk, (fn, ct) in per_student.items()]
 
-        # print(f"第{q}題可比對學生數: {len(entries)}")
+    # logging.getLogger(__name__).debug(f"第{q}題可比對學生數: {len(entries)}")
 
         count_for_q = 0
         for (k1, f1, c1), (k2, f2, c2) in combinations(entries, 2):
@@ -99,7 +100,7 @@ def check_plagiarism(homework_data, student_list, threshold, questions, cls=None
                     "similarity": round(sim * 100, 2)
                 })
                 count_for_q += 1
-        # print(f"第{q}題完成比對，發現 {count_for_q} 組疑似抄襲")
+    # logging.getLogger(__name__).debug(f"第{q}題完成比對，發現 {count_for_q} 組疑似抄襲")
 
     return plagiarism_cases
 
@@ -134,7 +135,7 @@ def generate_plagiarism_report(plagiarism_cases, questions, output_path=OUTPUT_P
 # 主函數
 def plagiarism_check(homework_file, cls=None, questions_path=QUESTIONS_PATH, 
                      threshold=0.7, students_data_path=STUDENTS_DATA_PATH, output_path=OUTPUT_PATH):
-    print(f"開始執行抄襲檢查...")
+    logging.getLogger(__name__).info("開始執行抄襲檢查...")
 
     questions = get_question_count(questions_path)
 
@@ -148,8 +149,8 @@ def plagiarism_check(homework_file, cls=None, questions_path=QUESTIONS_PATH,
     generate_plagiarism_report(plagiarism_cases, questions=questions, output_path=output_path)
 
     # 顯示實際報告檔案路徑
-    print(f"共發現 {len(plagiarism_cases)} 組疑似抄襲的配對")
-    print(f"已輸出報告至: {output_path / 'plagiarism_report.md'}")
+    logging.getLogger(__name__).info("共發現 %d 組疑似抄襲的配對", len(plagiarism_cases))
+    logging.getLogger(__name__).info("已輸出報告至: %s", output_path / 'plagiarism_report.md')
     
 if __name__ == "__main__":
     homework_path = Path("RUN") / "hw_all.json"

@@ -1,4 +1,5 @@
 from pathlib import Path
+import logging
 try:
     from api_key_manager import GeminiAPIKeyManager
 except ImportError:
@@ -35,6 +36,7 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
     old_full_prompt = None  # 追蹤相同 prompt 的重試輪次（先輪替 KEY，一輪全試過才 sleep）
     try_times = 0  # 計數：在同一份 prompt 下，已輪替過幾次 KEY
     
+    logger = logging.getLogger(__name__)
     while True:
         try:
             # 配置當前的 API KEY 並取得 client
@@ -65,17 +67,17 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
             output_path.mkdir(exist_ok=True)
             with open(output_path / "questions.md", "w", encoding="utf-8") as f:
                 f.write(response.text)
-            print(f"已輸出 Markdown 至: {output_path / 'questions.md'}")
+            logger.info("已輸出 Markdown 至: %s", output_path / 'questions.md')
             return
 
         except Exception as e:
             # 檢查是否為 429 配額錯誤
             if "429" in str(e) and "RESOURCE_EXHAUSTED" in str(e):
-                print(f"API KEY #{key_manager.current_index + 1} 配額已用盡")
+                logger.warning("API KEY #%d 配額已用盡", key_manager.current_index + 1)
                 
                 # 嘗試切換到下一個 KEY
                 if not key_manager.switch_to_next_key():
-                    print("所有 API KEY 的配額都已用盡")
+                    logger.error("所有 API KEY 的配額都已用盡")
                     return None
                 
                 continue  # 切換 KEY 後重試生成
@@ -84,7 +86,7 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
             elif "503 UNAVAILABLE" in str(e):
                 # 先輪替 KEY；若同一組 prompt 已嘗試到目前 KEY 的序號（表示轉滿一輪），才 sleep
                 if (full_prompt == old_full_prompt) and (try_times == key_manager.current_index + 1):
-                    print(f"模型過載，正在重試...({str(e)})")
+                    logger.warning("模型過載，正在重試...(%s)", str(e))
                     from time import sleep
                     sleep(30)
                     # 新一輪開始
@@ -96,7 +98,7 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
 
             elif "getaddrinfo failed" in str(e):
                 if (full_prompt == old_full_prompt) and (try_times == key_manager.current_index + 1):
-                    print(f"網路錯誤，正在重試...({str(e)})")
+                    logger.warning("網路錯誤，正在重試...(%s)", str(e))
                     from time import sleep
                     sleep(30)
                     try_times = 0
@@ -107,7 +109,7 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
 
             elif "Invalid \\escape" in str(e) or "Expecting" in str(e):
                 if (full_prompt == old_full_prompt) and (try_times == key_manager.current_index + 1):
-                    print(f"回應格式錯誤，正在重試...({str(e)})")
+                    logger.warning("回應格式錯誤，正在重試...(%s)", str(e))
                     from time import sleep
                     sleep(30)
                     try_times = 0
@@ -118,8 +120,8 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
                 
             else:
                 # 其他錯誤
-                print(f"錯誤: {str(e)}")
+                logger.exception("錯誤: %s", str(e))
                 return None
 
 if __name__ == "__main__":
-    pdf_to_markdown(pdf_path=r"data/Homework.pdf")
+    pdf_to_markdown(pdf_path=r"data/Homework 02.pdf")
