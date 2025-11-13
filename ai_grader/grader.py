@@ -308,6 +308,11 @@ class HomeworkGrader:
         logging.info("=" * 40)
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s",
+        force=True,
+    )
     logging.info("=" * 40)
     logging.info("AI Grader - 作業批改系統")
     logging.info("=" * 40)

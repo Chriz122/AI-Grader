@@ -153,6 +153,11 @@ def plagiarism_check(homework_file, cls=None, questions_path=QUESTIONS_PATH,
     logging.getLogger(__name__).info("已輸出報告至: %s", output_path / 'plagiarism_report.md')
     
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s",
+        force=True,
+    )
     homework_path = Path("RUN") / "hw_all.json"
     # 題數自動從 questions.md 讀取
     plagiarism_check(homework_path, cls=["上課完成", "回家完成"])

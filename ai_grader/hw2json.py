@@ -70,6 +70,11 @@ def hw_to_json(cls=["上課完成", "回家完成"], path=None,
     logging.getLogger(__name__).info("已輸出 JSON 至: %s", output_path / 'hw_all.json')
     
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s",
+        force=True,
+    )
     hw_path_1 = r"data\HW\11413450064-Homework 02上傳(課堂上完成)-42004"
     hw_path_2 = r"data\HW\11413450064-Homework 02上傳(非課堂上完成)-42006"
 

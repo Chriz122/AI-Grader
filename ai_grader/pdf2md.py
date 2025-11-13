@@ -124,4 +124,9 @@ def pdf_to_markdown(pdf_path, output_path=OUTPUT_PATH, model=MODEL_NAME):
                 return None
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s",
+        force=True,
+    )
     pdf_to_markdown(pdf_path=r"data/Homework 02.pdf")
