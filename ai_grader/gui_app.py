@@ -240,7 +240,7 @@ class AIGraderGUI:
         
         # 設定為實例變數
         self.current_language = config.get("language", "zh-TW")
-        self.default_model = config.get("default_model", "gemini-2.5-flash")
+        self.default_model = config.get("default_model", "gemini-3-pro")
         self.default_output_path = config.get("default_output_path", str(self.base_path / "RUN"))
         self.default_grading_criteria = config.get("default_grading_criteria", str(self.base_path / "knowledge" / "grading_criteria.md"))
         self.default_output_format = config.get("default_output_format", str(self.base_path / "knowledge" / "output_format.md"))
