@@ -85,14 +85,14 @@ GEMINI_API_KEY = "your_key_here"
 
 | Model | Category | RPM | TPM | RPD |
 |-------|----------|-----|-----|-----|
-| gemini-2.0-flash-exp | Text-out models | 0 / 10 | 0 / 250K | 0 / 50 |
+| gemini-2.5-pro | Text-out models | 0 / 2 | 0 / 125K | 0 / 50 |
 | gemini-2.0-flash-lite | Text-out models | 0 / 30 | 0 / 1M | 0 / 200 |
-| gemini-2.0-flash-preview-image-generation | Multi-modal generative models | 0 / 10 | 0 / 200K | 0 / 100 |
 | gemini-2.0-flash | Text-out models | 0 / 15 | 0 / 1M | 0 / 200 |
 | gemini-2.5-flash-lite | Text-out models | 0 / 15 | 0 / 250K | 0 / 1K |
 | gemini-2.5-flash-tts | Multi-modal generative models | 0 / 3 | 0 / 10K | 0 / 15 |
 | gemini-2.5-flash | Text-out models | 0 / 10 | 0 / 250K | 0 / 250 |
-| gemini-2.5-pro | Text-out models | 0 / 2 | 0 / 125K | 0 / 50 |
+| gemini-3-pro | Text-out models | N/A | 0 / 125K | N/A |
+| gemini-2.0-flash-exp | Text-out models | N/A | N/A | 0 / 50 |
 
 ## 快速啟動
 

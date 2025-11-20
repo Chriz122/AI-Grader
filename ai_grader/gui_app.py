@@ -638,7 +638,7 @@ class AIGraderGUI:
         self.grader_model_label.grid(row=6, column=0, sticky=tk.W, pady=5)
         self.grader_model_var = tk.StringVar(value=self.default_model)
         self.grader_model_combo = ttk.Combobox(self.grader_settings_frame, textvariable=self.grader_model_var, width=57)
-        self.grader_model_combo["values"] = ("gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash-exp", "gemini-2.0-flash", "gemini-2.0-flash-lite")
+        self.grader_model_combo["values"] = ("gemini-3-pro", "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash-exp", "gemini-2.0-flash", "gemini-2.0-flash-lite")
         self.grader_model_combo.grid(row=6, column=1, padx=5, pady=5)
         
         # 執行按鈕區域
